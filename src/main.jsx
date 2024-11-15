@@ -8,8 +8,9 @@ import Home from "./routes/home/Home.jsx";
 import RootLayout from "./layouts/rootLayout/RootLayout.jsx";
 import DashboardLayout from "./layouts/dashboardLayout/DashboardLayout.jsx";
 import Dashboard from "./routes/dashboard/Dashboard.jsx";
-
 import Chat from "./routes/chat/Chat.jsx";
+import SignInPage from "./routes/signin/SignIn.jsx";
+import SignUpPage from "./routes/signup/SignUp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/sign-in/*",
+        element: <SignInPage />,
+      },
+      {
+        path: "/sign-up/*",
+        element: <SignUpPage />,
       },
       {
         element: <DashboardLayout />,
