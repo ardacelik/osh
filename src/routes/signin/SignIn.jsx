@@ -1,9 +1,7 @@
-import './signIn.scss'
+import "./signIn.css";
 
 const SignIn = () => {
-  return (
-    <div className='signIn'>SignIn</div>
-  )
-}
+  return <div className="signIn">SignIn</div>;
+};
 
-export default SignIn
+export default SignIn;
