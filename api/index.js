@@ -119,6 +119,40 @@ app.get("/api/chats/:id", ClerkExpressRequireAuth({}), async (req, res) => {
   }
 });
 
+app.put("/api/chats/:id", ClerkExpressRequireAuth({}), async (req, res) => {
+  const userId = req.auth.userId;
+
+  const { question, answer } = req.body;
+
+  const updates = [
+    // When creating a new chat, the user prompt is already pushed and saved to the DB. So we only want to push the model's answer
+    ...(question ? [{ role: "user", content: [{ text: question }] }] : []),
+    { role: "model", content: [{ text: answer }] },
+  ];
+
+  try {
+    const updatedChat = await Chat.updateOne(
+      { _id: req.params.id, userId },
+      {
+        $push: {
+          history: {
+            $each: updates,
+          },
+        },
+      }
+    );
+
+    res.status(200).send(updatedChat);
+  } catch (error) {
+    console.error(
+      `[/api/chats/:id] Caught error while fetching chat: ${error}`
+    );
+    res
+      .status(500)
+      .send(`Encountered error while fetching a user chat: ${error.message}`);
+  }
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(401).send("Unauthenticated!");

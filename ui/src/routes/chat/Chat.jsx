@@ -34,7 +34,7 @@ const Chat = () => {
                   <Markdown>{message.content[0].text}</Markdown>
                 </div>
               ))}
-          <NewPrompt />
+          {data && <NewPrompt data={data} />}
         </div>
       </div>
     </div>
