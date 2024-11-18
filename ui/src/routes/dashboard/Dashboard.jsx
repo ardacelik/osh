@@ -28,9 +28,10 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const prompt = e.target.text.value;
     if (!prompt) return;
+    
     mutation.mutate(prompt);
   };
 
