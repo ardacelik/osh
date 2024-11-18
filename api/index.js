@@ -60,7 +60,7 @@ app.post("/api/chats", ClerkExpressRequireAuth({}), async (req, res) => {
           },
         ],
       });
-
+      
       await newUserChat.save();
     } else {
       await UserChats.updateOne(
@@ -74,9 +74,8 @@ app.post("/api/chats", ClerkExpressRequireAuth({}), async (req, res) => {
           },
         }
       );
-
-      res.status(201).send(newChat._id);
     }
+    res.status(201).send(newChat._id);
   } catch (error) {
     console.error(`[/api/chats] Caught error ${error}`);
     res

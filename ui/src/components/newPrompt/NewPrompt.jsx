@@ -49,8 +49,6 @@ const NewPrompt = ({ data }) => {
   });
 
   const add = async (prompt, firstQuestion) => {
-    if (!firstQuestion) setQuestion(prompt);
-
     try {
       const result = await fetch("http://localhost:3000/api/chat", {
         method: "POST",
@@ -61,16 +59,24 @@ const NewPrompt = ({ data }) => {
         },
         body: JSON.stringify({ question: prompt }),
       });
-
+      
       const response = await result.json();
       const llmResponse = response.content;
       console.log(llmResponse);
       setAnswer(llmResponse);
 
-      mutation.mutate({
-        question: prompt,
-        answer: llmResponse,
-      });
+      if (!firstQuestion) {
+        mutation.mutate({
+          question: prompt,
+          answer: llmResponse,
+        });
+      }
+      else {
+        mutation.mutate({
+          question: question,
+          answer: llmResponse,
+        });
+      }
     } catch (error) {
       console.error(
         `[NewPrompt.jsx] Error caught while interacting with the model: ${error}`
@@ -80,10 +86,10 @@ const NewPrompt = ({ data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const prompt = e.target.text.value;
     if (!prompt) return;
-
+    
     add(prompt, false);
   };
 
@@ -94,6 +100,7 @@ const NewPrompt = ({ data }) => {
         add(data.history[0].content[0].text, true);
       }
     }
+    
     alreadyRan.current = true;
   }, []);
 
