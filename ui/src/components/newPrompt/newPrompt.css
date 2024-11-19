@@ -4,7 +4,7 @@
 }
 
 .newForm {
-    width: 50%;
+    width: 80%;
     position: absolute;
     bottom: 0;
     background-color: #2c2937;
@@ -23,6 +23,7 @@
         border: none;
         outline: none;
         color: #ececec;
+        font-size: 16px;
     }
 
     button {
@@ -32,10 +33,11 @@
         border-radius: 50%;
         border: none;
         cursor: pointer;
-        padding: 10px;
+        padding: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 10px;
+        color: white;
     }
 }
