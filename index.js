@@ -7,7 +7,13 @@ import mongoose from "mongoose";
 import UserChats from "./models/user-chats.js";
 import Chat from "./models/chat.js";
 import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+console.log('Current directory:', __dirname);
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -16,8 +22,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
+    origin: '*',
   })
 );
 
@@ -32,7 +37,14 @@ const connect = async () => {
   }
 };
 
+
 app.use("/api/chat", chatRouter);
+
+app.get("/health", (req, res) => {
+  res.status(200).send("Backend is running gclouds");
+});
+
+app.use(express.static(path.join(__dirname, "ui", "dist")));
 
 app.post("/api/chats", ClerkExpressRequireAuth({}), async (req, res) => {
   const userId = req.auth.userId;
@@ -152,6 +164,10 @@ app.put("/api/chats/:id", ClerkExpressRequireAuth({}), async (req, res) => {
   }
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "ui", "dist", "index.html"));
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(401).send("Unauthenticated!");
@@ -159,5 +175,5 @@ app.use((err, req, res, next) => {
 
 app.listen(port, async () => {
   connect();
-  console.log(`Server running on ${port}`);
+  console.log(`Server is running on ${port}`);
 });

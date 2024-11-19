@@ -17,11 +17,10 @@ const RootLayout = () => {
       <QueryClientProvider client={queryClient}>
         <div className="rootLayout">
           <header>
-            <Link to="/">
+            <Link to="/" className="logo">
               <span>One Stop Health</span>
             </Link>
             <div className="user">
-              User
               <SignedIn>
                 <UserButton />
               </SignedIn>
